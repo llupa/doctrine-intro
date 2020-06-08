@@ -22,4 +22,4 @@ Migrating up to 20200623101156 from 0
   ++ 4 sql queries
 ```
 
-Return to [main page](../README.md).
+Return to [main page](../../README.md).

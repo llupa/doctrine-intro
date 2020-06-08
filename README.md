@@ -9,8 +9,8 @@ and Composer is installed globally. Visit [PHP installation](https://www.php.net
 
 #### Initial commit
 
-For the initial commit we have only ran the commands to have a  Symfony skeleton application and declare our dependency of 
-Doctrine. For this the purpose of this introduction we are using the [Doctrine ORM Pack](https://packagist.org/packages/symfony/orm-pack). 
+For the initial commit we only run the commands to have a  Symfony skeleton application and declare our dependency of 
+Doctrine. For this introduction we are using the [Doctrine ORM Pack](https://packagist.org/packages/symfony/orm-pack). 
 
 ```bash
 # create project
@@ -74,3 +74,17 @@ creation queries. Go on and execute it:
 
 The end [result](doc/migration/first-diff.md) is the same as the first command shown above. This way offers more control and lets you have _surgical precision_
 on your native SQL queries.
+
+#### Add create, find and remove commands for Publisher, Book, Author and Address
+
+In this commit we are creating simple commands to showcase the main usage of persisting (`INSERT`), finding (`SELECT`) 
+and removing (`DELETE`) entities from our storage/database. 
+
+* For Publisher, we have respectively: [create](doc/command/publisher/create.md), [find](doc/command/publisher/find.md) 
+and [remove](doc/command/publisher/remove.md).
+* For Book, we have respectively: [create](doc/command/book/create.md), [find](doc/command/book/find.md) 
+and [remove](doc/command/book/remove.md).
+* For Author, we have respectively: [create](doc/command/author/create.md), [find](doc/command/author/find.md) 
+and [remove](doc/command/author/remove.md).
+* For Address, we have respectively: [create](doc/command/address/create.md), [find](doc/command/address/find.md) 
+and [remove](doc/command/address/remove.md).
