@@ -30,13 +30,13 @@ class Book
     private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Publisher::class)
+     * @ORM\ManyToOne(targetEntity=Publisher::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $publisher;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books")
+     * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books", fetch="EXTRA_LAZY")
      */
     private $authors;
 

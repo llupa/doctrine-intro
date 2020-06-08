@@ -29,7 +29,8 @@ final class CreatePublisherCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('name', InputArgument::REQUIRED);
+            ->addArgument('name', InputArgument::REQUIRED)
+            ->addArgument('street', InputArgument::REQUIRED);
     }
 
     /**
@@ -49,8 +50,11 @@ final class CreatePublisherCommand extends Command
             return Command::FAILURE;
         }
 
+        $street = $input->getArgument('street');
+
         $publisher = new Publisher();
         $publisher->setName($name);
+        $publisher->getAddress()->setStreet($street);
 
         $this->doctrine->getManager()->persist($publisher);
         $this->doctrine->getManager()->flush();

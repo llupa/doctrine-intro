@@ -28,6 +28,11 @@ class Publisher
      */
     private $address;
 
+    public function __construct()
+    {
+        $this->address = new Address();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,12 +53,5 @@ class Publisher
     public function getAddress(): ?Address
     {
         return $this->address;
-    }
-
-    public function setAddress(Address $address): self
-    {
-        $this->address = $address;
-
-        return $this;
     }
 }

@@ -6,6 +6,7 @@ use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use function sprintf;
 
 /**
  * @ORM\Entity(repositoryClass=AuthorRepository::class)
@@ -89,6 +90,16 @@ class Author
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf(
+            '%s %s %s',
+            $this->firstName,
+            $this->middleName,
+            $this->lastName
+        );
     }
 
     /**

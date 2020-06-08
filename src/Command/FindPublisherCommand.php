@@ -65,9 +65,14 @@ final class FindPublisherCommand extends Command
         $results = $this->repository->matching($criteria)->toArray();
         $rows = [];
 
-        array_walk($results, function (Publisher $publisher) use (&$rows) { $rows[] = [$publisher->getId(), $publisher->getName()]; });
+        array_walk(
+            $results,
+            function (Publisher $publisher) use (&$rows) {
+                $rows[] = [$publisher->getId(), $publisher->getName(), $publisher->getAddress()->getStreet()];
+            }
+        );
 
-        $io->table(['ID', 'Name'], $rows);
+        $io->table(['ID', 'Name', 'Street'], $rows);
 
         return Command::SUCCESS;
     }

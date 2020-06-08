@@ -126,3 +126,16 @@ bin/console doctrine:migrations:status
 
 This is a useful command to use in case you are _lost_ in your migration history. It is not mandatory to run it every time
 you execute a migration.
+
+#### Update create, find commands for Publisher, Book, Author for relationships
+
+With new relationship definitions the old commands are outdated. In this commit, we update the following:
+
+* Publisher: [create](doc/command/publisher/create.md), [find](doc/command/publisher/find.md)
+* Book: [create](doc/command/book/create.md), [find](doc/command/book/find.md)
+* Author: [create](doc/command/author/create.md), [find](doc/command/author/find.md)
+
+We also change slightly doctrine's default generated code.  
+
+* We make Publisher - Address a read only interaction.
+* We change Book relationship fetching mechanism to better suit our needs.

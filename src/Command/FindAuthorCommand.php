@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\Address;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Repository\AuthorRepository;
@@ -14,6 +15,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function array_walk;
+use function count;
+use function in_array;
+use function strtolower;
 
 final class FindAuthorCommand extends Command
 {
@@ -83,6 +87,38 @@ final class FindAuthorCommand extends Command
         array_walk($results, function (Author $author) use (&$rows) { $rows[] = [$author->getId(), $author->getFirstName(), $author->getMiddleName(), $author->getLastName()]; });
 
         $io->table(['ID', 'First name', 'Middle name', 'Last name'], $rows);
+
+        if (count($results) === 0) {
+            return Command::SUCCESS;
+        }
+
+        $answer = $io->ask('Do you want to show addresses for an Author listed above?', 'yes');
+
+        if (in_array(strtolower($answer), ['y', 'yes'])) {
+            $id = $io->ask('Type in the Author id');
+
+            $author = $this->repository->find($id);
+
+            if (! $author instanceof Author) {
+                $io->writeln("[$id] is not a valid author identifier.");
+
+                return Command::SUCCESS;
+            }
+
+            $addresses = $author->getAddresses()->toArray();
+
+            if (empty($addresses)) {
+                $io->writeln('This author has no addresses yet.');
+
+                return Command::SUCCESS;
+            }
+
+            $addressRows = [];
+
+            array_walk($addresses, function (Address $address) use(&$addressRows, $author) { $addressRows[] = [$author->getFullName(), $address->getStreet()];});
+
+            $io->table(['Author', 'Address'], $addressRows);
+        }
 
         return Command::SUCCESS;
     }
