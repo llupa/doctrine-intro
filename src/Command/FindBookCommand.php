@@ -6,7 +6,10 @@ namespace App\Command;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\PriceHistory;
 use App\Repository\BookRepository;
+use App\Repository\PriceHistoryRepository;
+use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,11 +25,13 @@ final class FindBookCommand extends Command
 {
     protected static $defaultName = 'app:find:book';
 
-    private $repository;
+    private $bookRepository;
+    private $priceHistoryRepository;
 
-    public function __construct(BookRepository $repository)
+    public function __construct(BookRepository $bookRepository, PriceHistoryRepository $priceHistoryRepository)
     {
-        $this->repository = $repository;
+        $this->bookRepository = $bookRepository;
+        $this->priceHistoryRepository = $priceHistoryRepository;
 
         parent::__construct();
     }
@@ -66,7 +71,7 @@ final class FindBookCommand extends Command
         }
 
         /** @var Book[] $results */
-        $results = $this->repository->matching($criteria)->toArray();
+        $results = $this->bookRepository->matching($criteria)->toArray();
         $rows = [];
 
         array_walk(
@@ -93,7 +98,7 @@ final class FindBookCommand extends Command
         if (in_array(strtolower($answer), ['y', 'yes'])) {
             $id = $io->ask('Type in the Book id');
 
-            $book = $this->repository->find($id);
+            $book = $this->bookRepository->find($id);
 
             if (! $book instanceof Book) {
                 $io->writeln("[$id] is not a valid book identifier.");
@@ -109,11 +114,49 @@ final class FindBookCommand extends Command
                 return Command::SUCCESS;
             }
 
-            $authorRows = [];
+            $entryRows = [];
 
-            array_walk($authors, function (Author $author) use(&$authorRows, $book) { $authorRows[] = [$book->getTitle(), $author->getFullName()];});
+            array_walk($authors, function (Author $author) use(&$entryRows, $book) { $entryRows[] = [$book->getTitle(), $author->getFullName()];});
 
-            $io->table(['Book title', 'Author'], $authorRows);
+            $io->table(['Book title', 'Author'], $entryRows);
+        }
+
+        $answer = $io->ask('Do you want to show price changes for a Book listed above?', 'yes');
+
+        if (in_array(strtolower($answer), ['y', 'yes'])) {
+            $id = $io->ask('Type in the Book id');
+
+            $book = $this->bookRepository->find($id);
+
+            if (! $book instanceof Book) {
+                $io->writeln("[$id] is not a valid book identifier.");
+
+                return Command::SUCCESS;
+            }
+
+            $entries = $this->priceHistoryRepository->findBy(['bookIdentifier' => $book->getId()]);
+
+            if (empty($entries)) {
+                $io->writeln('This book has no price changes yet.');
+
+                return Command::SUCCESS;
+            }
+
+            $entryRows = [];
+
+            array_walk(
+                $entries,
+                function (PriceHistory $history) use (&$entryRows, $book) {
+                    $entryRows[] = [
+                        $book->getTitle(),
+                        $history->getPrice(),
+                        $history->getCreatedAt()->format(DateTime::RFC3339)
+                    ];
+                }
+            );
+
+            $io->table(['Book title', 'Old price', 'Set on'], $entryRows);
+            $io->table(['Book title', 'Current price'], [[$book->getTitle(), $book->getPrice()]]);
         }
 
         return Command::SUCCESS;

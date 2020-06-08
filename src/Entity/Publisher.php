@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\PublisherRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PublisherRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Publisher
 {
@@ -27,6 +30,11 @@ class Publisher
      * @ORM\JoinColumn(nullable=false)
      */
     private $address;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $lastUpdate;
 
     public function __construct()
     {
@@ -53,5 +61,21 @@ class Publisher
     public function getAddress(): ?Address
     {
         return $this->address;
+    }
+
+    public function getLastUpdate(): ?DateTimeInterface
+    {
+        return $this->lastUpdate;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setLastUpdate(): self
+    {
+        $this->lastUpdate = new DateTime();
+
+        return $this;
     }
 }

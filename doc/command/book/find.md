@@ -24,6 +24,9 @@ Finding Book ...
  ---------------- ------------------ 
   The Testaments   Margaret  Atwood  
  ---------------- ------------------ 
+
+ Do you want to show price changes for a Book listed above? [yes]:
+ > no
 ```
 
 ```
@@ -40,6 +43,25 @@ Finding Book ...
 
  Do you want to show Authors for a Book listed above? [yes]:
  > no
+
+ Do you want to show price changes for a Book listed above? [yes]:
+ > yes
+
+ Type in the Book id:
+ > 1
+
+ ---------------- ----------- --------------------------- 
+  Book title       Old price   Set on                     
+ ---------------- ----------- --------------------------- 
+  The Testaments   10,99       2020-06-23T13:41:00+00:00  
+  The Testaments   9,99        2020-06-23T13:43:10+00:00  
+ ---------------- ----------- --------------------------- 
+
+ ---------------- --------------- 
+  Book title       Current price  
+ ---------------- --------------- 
+  The Testaments   8,99           
+ ---------------- --------------- 
 ```
 
 ```
@@ -57,6 +79,9 @@ Finding Book ...
  ---- ------------------------- ------- ---------------------- -------------- 
 
  Do you want to show Authors for a Book listed above? [yes]:
+ > no
+
+ Do you want to show price changes for a Book listed above? [yes]:
  > no
 ```
 

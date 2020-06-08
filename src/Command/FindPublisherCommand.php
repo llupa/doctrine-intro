@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Entity\Publisher;
 use App\Repository\PublisherRepository;
+use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,11 +69,16 @@ final class FindPublisherCommand extends Command
         array_walk(
             $results,
             function (Publisher $publisher) use (&$rows) {
-                $rows[] = [$publisher->getId(), $publisher->getName(), $publisher->getAddress()->getStreet()];
+                $rows[] = [
+                    $publisher->getId(),
+                    $publisher->getName(),
+                    $publisher->getAddress()->getStreet(),
+                    $publisher->getLastUpdate()->format(DateTime::RFC3339)
+                ];
             }
         );
 
-        $io->table(['ID', 'Name', 'Street'], $rows);
+        $io->table(['ID', 'Name', 'Street', 'Last update'], $rows);
 
         return Command::SUCCESS;
     }

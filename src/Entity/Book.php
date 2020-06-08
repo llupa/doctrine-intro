@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
+ * @ORM\EntityListeners({"App\Listener\BookListener"})
  */
 class Book
 {
@@ -23,6 +24,8 @@ class Book
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
+    private $oldPrice;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -69,9 +72,17 @@ class Book
 
     public function setPrice(string $price): self
     {
-        $this->price = $price;
+        if ($price != $this->price) {
+            $this->oldPrice = $this->price;
+            $this->price = $price;
+        }
 
         return $this;
+    }
+
+    public function getOldPrice(): ?string
+    {
+        return $this->oldPrice;
     }
 
     public function getPublisher(): ?Publisher

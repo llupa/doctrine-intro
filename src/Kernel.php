@@ -2,7 +2,10 @@
 
 namespace App;
 
+use App\Listener\EntityListenerInterface;
+use App\Listener\OnFlushLifecycleListenerInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -24,5 +27,16 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}/'.$this->environment.'/*.yaml');
         $routes->import('../config/{routes}/*.yaml');
         $routes->import('../config/{routes}.yaml');
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        $container
+            ->registerForAutoconfiguration(EntityListenerInterface::class)
+            ->addTag('doctrine.orm.entity_listener', ['lazy' => true]);
+
+        $container
+            ->registerForAutoconfiguration(OnFlushLifecycleListenerInterface::class)
+            ->addTag('doctrine.event_listener', ['event' => 'onFlush']);
     }
 }
