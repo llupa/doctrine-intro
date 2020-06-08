@@ -35,4 +35,4 @@ bin/console make:entity
  Success! 
 ```
 
-Return to [main page](../README.md).
+Return to [main page](../../README.md).

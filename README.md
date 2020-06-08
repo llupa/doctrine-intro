@@ -38,8 +38,8 @@ bin/console doctrine:database:create
 If everything is successful you should read `Created database .../doctrine-intro/var/data.db for connection named default`.
 Where `...` is your local directory location.
 
-Now we can continue to create our entities. We will work with [Publisher](doc/make-publisher.md), [Book](doc/make-book.md), 
-[Author](doc/make-author.md) and [Address](doc/make-address.md). All of them will first 
+Now we can continue to create our entities. We will work with [Publisher](doc/create/make-publisher.md), [Book](doc/create/make-book.md), 
+[Author](doc/create/make-author.md) and [Address](doc/create/make-address.md). All of them will first 
 have primitive property values. To create them we run the following command for each entity.
 
 ```bash
@@ -88,3 +88,41 @@ and [remove](doc/command/book/remove.md).
 and [remove](doc/command/author/remove.md).
 * For Address, we have respectively: [create](doc/command/address/create.md), [find](doc/command/address/find.md) 
 and [remove](doc/command/address/remove.md).
+
+#### Add relationships between entities
+
+In this commit we make use again of the `make:entity` command multiple times to define relationships between our 
+[Publisher](doc/update/make-publisher.md), [Book](doc/update/make-book.md), [Author](doc/update/make-author.md) and 
+Address entities. The relationship structure is shown in the table below: 
+
+| Which?    | Target    | Relationship             |
+|-----------|-----------|--------------------------|
+| Publisher | Address   | OneToOne unidirectional  |
+| Book      | Publisher | ManyToOne unidirectional |
+| Book      | Author    | ManyToMany bidirectional |
+| Author    | Address   | OneToMany bidirectional  |
+
+At this point the physical schema is out of sync with our application. Let's use again the migration tool from Doctrine
+to fix that. 
+
+```
+bin/console doctrine:migrations:diff
+```
+
+A new MigrationVERSION class was added automatically in our `Migrations` directory. We run once more:
+
+```
+bin/console doctrine:migrations:migrate
+```
+
+The end [result](doc/migration/second-diff-fail.md) will not be as the last migration. Our entity relationships stop us from 
+moving forward. This will be addressed at a latter commit, for now you can drop your database, create it, and 
+[run all](doc/migration/second-diff.md) the migrations. You can always check your migrations [status](doc/migration/status.md) 
+with the following command: 
+
+```
+bin/console doctrine:migrations:status
+```
+
+This is a useful command to use in case you are _lost_ in your migration history. It is not mandatory to run it every time
+you execute a migration.

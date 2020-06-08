@@ -1,22 +1,36 @@
-Book
-----
+Author
+------
 
 Below you will find a full output of our `make:entity` command run, and the options we are choosing.
 
 ```
-bin/console make:entity
+bin/console make:entity 
 
- Class name of the entity to create or update (e.g. GentleGnome):
- > Book
+ Class name of the entity to create or update (e.g. FierceGnome):
+ > Author
 
- created: src/Entity/Book.php
- created: src/Repository/BookRepository.php
+ created: src/Entity/Author.php
+ created: src/Repository/AuthorRepository.php
  
  Entity generated! Now let's add some fields!
  You can always add more fields later manually or by re-running this command.
 
  New property name (press <return> to stop adding fields):
- > title
+ > firstName
+
+ Field type (enter ? to see all types) [string]:
+ > string
+
+ Field length [255]:
+ > 255
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ updated: src/Entity/Author.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > middleName
 
  Field type (enter ? to see all types) [string]:
  > string
@@ -25,31 +39,28 @@ bin/console make:entity
  > 
 
  Can this field be null in the database (nullable) (yes/no) [no]:
- > no
+ > yes
 
- updated: src/Entity/Book.php
+ updated: src/Entity/Author.php
 
  Add another property? Enter the property name (or press <return> to stop adding fields):
- > price
+ > lastName
 
  Field type (enter ? to see all types) [string]:
- > decimal
+ > 
 
- Precision (total number of digits stored: 100.00 would be 5) [10]:
- > 5
-
- Scale (number of decimals to store: 100.00 would be 2) [0]:
- > 2
+ Field length [255]:
+ > 
 
  Can this field be null in the database (nullable) (yes/no) [no]:
- > no
+ > 
 
- updated: src/Entity/Book.php
+ updated: src/Entity/Author.php
 
  Add another property? Enter the property name (or press <return> to stop adding fields):
- >
+ > 
+ 
+ Success!
+``` 
 
- Success! 
-```
-
-Return to [main page](../README.md).
+Return to [main page](../../README.md).

@@ -22,6 +22,11 @@ class Address
      */
     private $street;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="addresses")
+     */
+    private $author;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class Address
     public function setStreet(string $street): self
     {
         $this->street = $street;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
